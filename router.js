@@ -3,59 +3,40 @@ let router = new Router();
 const koaBody = require('koa-body')({
     multipart: true,  // 允许上传多个文件
 });
-let data = [
-    {
-        id:1,
-        name:'小红',
-        level:1,
-        gender: 1,
-    },
-    {
-        id:2,
-        name:'小橙',
-        level:1,
-        gender: 1,
-    },
-    {
-        id:3,
-        name:'小黄',
-        level:2,
-        gender: 0,
-    },
-    {
-        id:4,
-        name:'小绿',
-        level:1,
-        gender: 0,
-    },
-    {
-        id:5,
-        name:'小白',
-        level:2,
-        gender: 0,
-    }
-];
+let id = '2'
+let data = {
+    list: [
+        {
+            id: '1',
+            name: '张三',
+            tel: '13000000000',
+            address: '浙江省杭州市西湖区文三路 138 号东方通信大厦 7 楼 501 室'
+        },
+        {
+            id: '2',
+            name: '李四',
+            tel: '1310000000',
+            address: '浙江省杭州市拱墅区莫干山路 50 号'
+        }
+    ],
+    disabledList: [
+        {
+            id: '3',
+            name: '王五',
+            tel: '1320000000',
+            address: '浙江省杭州市滨江区江南大道 15 号'
+        }
+    ],
+    add: '新增地址',
+    edit: '编辑地址',
+    disabledText: '以下地址超出配送范围'
+}
 // 注册
 // 第二章 2-1
-router.get('/userList', async (ctx) => {
-
-    let level = ctx.query.level
-    let gender = ctx.query.gender
-    let res = data.filter((item=>{
-        if(level && gender){
-            return item.level == level && item.gender == gender
-        }
-        if(level){
-            return item.level == level
-        }
-        if(gender){
-            return item.gender == gender
-        }
-        return true
-    }))
+router.get('/addressLis', async (ctx) => {
     ctx.body = {
         code:200,
-        data:res
+        data:data
     }
 });
 // 第二章 2-2
