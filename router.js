@@ -1,79 +1,89 @@
 const Router = require('koa-router');
 let router = new Router();
 const koaBody = require('koa-body')({
-    multipart: true,  // 允许上传多个文件
+	multipart: true,  // 允许上传多个文件
 });
-let id = '2'
-let data = {
-    list: [
-        {
-            id: '1',
-            name: '张三',
-            tel: '13000000000',
-            address: '浙江省杭州市西湖区文三路 138 号东方通信大厦 7 楼 501 室'
-        },
-        {
-            id: '2',
-            name: '李四',
-            tel: '1310000000',
-            address: '浙江省杭州市拱墅区莫干山路 50 号'
-        }
-    ],
-    disabledList: [
-        {
-            id: '3',
-            name: '王五',
-            tel: '1320000000',
-            address: '浙江省杭州市滨江区江南大道 15 号'
-        }
-    ],
-    add: '新增地址',
-    edit: '编辑地址',
-    disabledText: '以下地址超出配送范围'
-}
-// 注册
-// 第二章 2-1
-router.get('/addressLis', async (ctx) => {
-    ctx.body = {
-        code:200,
-        data:data
-    }
+let id = 3
+let data = [
+	{
+		name: '张三',
+		tel: '13000000000',
+		id: 1
+	},
+	{
+		name: '李四',
+		tel: '13000000001',
+		id: 2
+	},
+	{
+		name: '王五',
+		tel: '13000000002',
+		id: 3
+	}
+];
+router.get('/contactList', async (ctx) => {
+	ctx.body = {
+		code: 200,
+		data: data
+	}
 });
-// 第二章 2-2
 //form-data
-router.post('/user/new/form',koaBody, async (ctx) => {
-    console.log(ctx.request.body)
-    ctx.body = '1'
+router.post('/contact/new/form', koaBody, async (ctx) => {
+	let newData = ctx.request.body
+	console.log(newData)
+	id++
+	newData.id = id
+	data.push(newData)
+	ctx.body = {
+		code: 200,
+		data: newData
+	}
 });
-router.post('/user/new/json', async (ctx) => {
-    console.log(ctx.request.body)
-    ctx.body = '1'
+router.post('/contact/new/json', async (ctx) => {
+	let newData = ctx.request.body
+	console.log(newData)
+	id++
+	newData.id = id
+	data.push(newData)
+	ctx.body = {
+		code: 200,
+		data: newData
+	}
 });
-router.del('/user/:id', async (ctx) => {
-    let arr = data.filter(item=>{
-        return item.id == ctx.params.id
-    })
-    data = data.filter(item=>{
-        return item.id != ctx.params.id
-    })
-    if(arr.length){
-        ctx.body={
-            code:200,
-            message:'删除成功'
-        }
-    }else{
-        ctx.body={
-            code:500,
-            message:'用户不存在'
-        }
-    }
+router.put('/contact/edit', async (ctx) => {
+	let newData = ctx.request.body
+	console.log(newData)
+	data.map((item, index) => {
+		if (item.id == newData.id) {
+			data[index] = newData
+		}
+	})
+	console.log(data)
+	ctx.body = {
+		code: 200,
+		data: newData
+	}
 });
-router.put('/second', async (ctx) => {
-    console.log(ctx)
-
+router.patch('/contact/edit', async (ctx) => {
+	let newData = ctx.request.body
+	console.log(newData)
+	data.map((item, index) => {
+		if (item.id == newData.id) {
+			data[index] = newData
+		}
+	})
+	console.log(data)
+	ctx.body = {
+		code: 200,
+		data: newData
+	}
 });
-router.patch('/second', async (ctx) => {
-    console.log(ctx)
-
+router.del('/contact/:id', async (ctx) => {
+	data = data.filter(item => item.id != ctx.params.id)
+	console.log(data)
+	ctx.body = {
+		code: 200,
+		message: '删除成功'
+	}
 });
 module.exports = router;

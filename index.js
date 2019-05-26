@@ -3,7 +3,6 @@ const app = new Koa();
 const Router = require('koa-router');
 const cors = require('koa2-cors');
 const koaBody = require('koa-body');
-var bodyParser = require('koa-bodyparser');
 let api = require('./router')
 
 app.use(cors({
@@ -13,7 +12,7 @@ app.use(cors({
     exposeHeaders: ['WWW-Authenticate', 'Server-Authorization'],
     maxAge: 5,
     credentials: true,
-    allowMethods: ['GET', 'POST', 'DELETE'],
+    allowMethods: ['GET', 'POST', 'DELETE', 'PUT','PATCH'],
     allowHeaders: ['Content-Type', 'Authorization', 'Accept'],
 }))
 
@@ -37,9 +36,9 @@ app.use(async (ctx, next) => {
 
 
 //装载所有子路由
-let router = new Router();
-app.use(bodyParser());
 app.use(koaBody());
+let router = new Router();
+
 
 router.use('/api',api.routes());
 
