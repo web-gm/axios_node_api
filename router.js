@@ -86,4 +86,18 @@ router.del('/contact/:id', async (ctx) => {
 		message: '删除成功'
 	}
 });
+router.get('/longtime', async (ctx) => {
+	let query = ()=>{
+		return new Promise((resolve,reject)=>{
+			setTimeout(function () {
+				resolve('请求成功');
+			},5000)
+		})
+	}
+	let result = await query();
+		ctx.body = {
+			code: 200,
+			message: result
+		}
+});
 module.exports = router;
