@@ -27,6 +27,16 @@ router.get('/contactList', async (ctx) => {
 		data: data
 	}
 });
+function getQueryVariable(url,variable)
+{
+	var query = url.split('?')[1];
+	var vars = query.split("&");
+	for (var i=0;i<vars.length;i++) {
+		var pair = vars[i].split("=");
+		if(pair[0] == variable){return pair[1];}
+	}
+	return(false);
+}
 //form-data
 router.post('/contact/new/form', koaBody, async (ctx) => {
 	let newData = ctx.request.body
@@ -78,9 +88,10 @@ router.patch('/contact/edit', async (ctx) => {
 		data: newData
 	}
 });
-router.del('/contact/:id', async (ctx) => {
-	data = data.filter(item => item.id != ctx.params.id)
-	console.log(data)
+router.del('/contact', async (ctx) => {
+	let id =getQueryVariable(ctx.request.url,'id')
+	data = data.filter(item => item.id != id)
+	console.log(id)
 	ctx.body = {
 		code: 200,
 		message: '删除成功'
